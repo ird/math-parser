@@ -7,9 +7,12 @@
  * user guide available at https://docs.gradle.org/2.10/userguide/tutorial_java_projects.html
  */
 
-/*
+
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'parser.Tokenizer'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -29,4 +32,3 @@ dependencies {
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:3.8.2'
 }
-*/
