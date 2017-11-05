@@ -11,4 +11,15 @@ public class Tokenizer {
             this.token = token;
         }
     }
+
+    private LinkedList<TokenInfo> tokenInfos;
+
+    public Tokenizer() {
+        tokenInfos = new LinkedList<TokenInfo>();
+    }
+
+    public void add(String regex, int token) {
+        tokenInfos.add(
+            new TokenInfo(Pattern.compile("^("+regex+")"), token));
+    }
 }
