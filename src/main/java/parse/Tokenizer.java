@@ -37,6 +37,7 @@ public class Tokenizer {
     }
     public void tokenize(String str) {
         String s = new String(str);
+        s = s.trim();
         tokens.clear();
         while(!s.equals("")) {
             boolean match = false;
@@ -46,7 +47,7 @@ public class Tokenizer {
                     match = true;
                     String token = s.substring(m.start(), m.end()).trim();
                     tokens.add(new Token(info.token, token));
-                    s = m.replaceFirst("");
+                    s = m.replaceFirst("").trim();
                     break;
                 }
             }
