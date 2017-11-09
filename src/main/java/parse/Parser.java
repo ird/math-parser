@@ -11,7 +11,30 @@ public class Parser {
             throw new ParserException("Unexpected token; " + lookahead);
         }
     }
+    public void nextToken() {
+        tokes.pop();
+        if(tokens.isEmpty()){
+            lookahead = new Token(Token.EPSILON, "");
+        } else {
+            lookahead = token.getFirst();
+        }
+    }
     public void expression() {
-
+        // rule: expression :- signed_term sum_op
+        signedTerm();
+        sumOp();
+    }
+    public void signedTerm() {
+        if(lookahead.token == Token.PLUSMINUS) {
+            nextToken();
+        }
+        term();
+    }
+    public void sumOp() {
+        if(lookahed.token == Token.PLUSMINUS) {
+            nextToken();
+            term();
+            sumOp();
+        }
     }
 }
