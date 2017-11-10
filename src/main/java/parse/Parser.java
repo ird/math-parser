@@ -20,21 +20,30 @@ public class Parser {
         }
     }
     public void expression() {
-        // rule: expression :- signed_term sum_op
+        // rule: expression -> signed_term sum_op
         signedTerm();
         sumOp();
     }
     public void signedTerm() {
+        // signed_term -> PLUSMINUS term
+        // signed_term -> term
         if(lookahead.token == Token.PLUSMINUS) {
             nextToken();
         }
         term();
     }
     public void sumOp() {
+        // sum_op -> PLUSMINUS term sum_op
+        // sum_op -> ESPSILON
         if(lookahed.token == Token.PLUSMINUS) {
             nextToken();
             term();
             sumOp();
         }
+    }
+    public void term() {
+        // term -> factor termOp
+        factor();
+        termOp();
     }
 }
