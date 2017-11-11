@@ -34,7 +34,7 @@ public class Parser {
     }
     public void sumOp() {
         // sum_op -> PLUSMINUS term sum_op
-        // sum_op -> ESPSILON
+        // sum_op -> EPSILON
         if(lookahed.token == Token.PLUSMINUS) {
             nextToken();
             term();
@@ -45,5 +45,19 @@ public class Parser {
         // term -> factor termOp
         factor();
         termOp();
+    }
+    public void signedFactor() {
+        // signed_factor -> PLUSMINUS factor
+        // signed_factor -> factor
+        // TODO
+    }
+    public void termOp() {
+        // term_op -> MULTDIV factor term_op
+        // term_op -> EPSILON
+        if(lookahead.token == Token.MULTDIV) {
+            nextToken();
+            signedFactor();
+            termOp();
+        }
     }
 }
