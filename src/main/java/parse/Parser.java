@@ -1,10 +1,13 @@
-package parser;
+package parse;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class Parser {
     LinkedList<Token> tokens;
     Token lookahead;
-    public void parse(List<Token> tokens) {
-        this.tokens = tokens.clone();
+    public void parse(LinkedList<Token> tokens) {
+        this.tokens = (LinkedList<Token>) tokens.clone();
         lookahead = this.tokens.getFirst();
         expression();
         if(lookahead.token != Token.EPSILON) {
@@ -12,11 +15,11 @@ public class Parser {
         }
     }
     public void nextToken() {
-        tokes.pop();
+        tokens.pop();
         if(tokens.isEmpty()){
             lookahead = new Token(Token.EPSILON, "");
         } else {
-            lookahead = token.getFirst();
+            lookahead = tokens.getFirst();
         }
     }
     public void expression() {
@@ -35,7 +38,7 @@ public class Parser {
     public void sumOp() {
         // sum_op -> PLUSMINUS term sum_op
         // sum_op -> EPSILON
-        if(lookahed.token == Token.PLUSMINUS) {
+        if(lookahead.token == Token.PLUSMINUS) {
             nextToken();
             term();
             sumOp();

@@ -1,4 +1,4 @@
-package parser;
+package parse;
 
 public class Token {
     public static final int EPSILON = 0;

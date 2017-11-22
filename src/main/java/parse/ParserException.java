@@ -1,4 +1,4 @@
-package parser;
+package parse;
 
 public class ParserException extends RuntimeException {
     public ParserException() { super(); }
