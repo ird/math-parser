@@ -13,7 +13,7 @@ public class Parser {
             throw new ParserException("Unexpected token; " + lookahead);
         }
     }
-    public void nextToken() {
+    private void nextToken() {
         tokens.pop();
         if(tokens.isEmpty()){
             lookahead = new Token(Token.EPSILON, "");
@@ -21,12 +21,12 @@ public class Parser {
             lookahead = tokens.getFirst();
         }
     }
-    public void expression() {
+    private void expression() {
         // rule: expression -> signed_term sum_op
         signedTerm();
         sumOp();
     }
-    public void signedTerm() {
+    private void signedTerm() {
         // signed_term -> PLUSMINUS term
         // signed_term -> term
         if(lookahead.token == Token.PLUSMINUS) {
@@ -34,7 +34,7 @@ public class Parser {
         }
         term();
     }
-    public void sumOp() {
+    private void sumOp() {
         // sum_op -> PLUSMINUS term sum_op
         // sum_op -> EPSILON
         if(lookahead.token == Token.PLUSMINUS) {
@@ -43,28 +43,14 @@ public class Parser {
             sumOp();
         }
     }
-    public void term() {
+    private void term() {
         // term -> factor termOp
         // only the subsequent terms can be proceeded by a PLUSMINUS
         factor();
         termOp();
     }
-    public void factor() {
-        // factor -> argument factor_op
-        argument();
-        factorOp();
-
-    }
-    public void signedFactor() {
-        // signed_factor -> PLUSMINUS factor
-        // signed_factor -> factor
-        if(lookahead.token == Token.PLUSMINUS) {
-            nextToken();
-        }
-        factor();
-    }
-    public void termOp() {
-        // term_op -> MULTDIV factor term_op
+    private void termOp() {
+        // term_op -> MULTDIV signed_factor term_op
         // term_op -> EPSILON
         if(lookahead.token == Token.MULTDIV) {
             nextToken();
@@ -72,12 +58,62 @@ public class Parser {
             termOp();
         }
     }
-    public void argument() {
+    private void factor() {
+        // factor -> argument factor_op
+        argument();
+        factorOp();
 
     }
-    public void factorOp() {
-        // factor_op -> RAISED value
-        // factor_op -> value
+    private void signedFactor() {
+        // signed_factor -> PLUSMINUS factor
+        // signed_factor -> factor
+        if(lookahead.token == Token.PLUSMINUS) {
+            nextToken();
+        }
+        factor();
     }
+    private void argument() {
+        // argument -> FUNCTION argument
+        // argument -> OPENBRACKET expression CLOSEBRACKET
+        // argument -> value
 
+        switch (lookahead.token) {
+            case Token.FUNCTION:
+                nextToken();
+                argument();
+                break;
+            case Token.OPENBRACKET:
+                nextToken();
+                expression();
+                if(lookahead.token != Token.CLOSEBRACKET) {
+                    throw new ParserException("')' not found: " + lookahead.seq);
+                }
+                nextToken();
+                break;
+            default:
+                value();
+        }
+    }
+    private void factorOp() {
+        // factor_op -> RAISED signed_factor
+        // factor_op -> EPSILON
+        if(lookahead.token == Token.RAISED) {
+            nextToken();
+            signedFactor();
+        }
+    }
+    private void value() {
+        // value -> number
+        // value -> variable
+        switch (lookahead.token) {
+            case Token.NUMBER:
+                nextToken();
+                break;
+            case Token.VAR:
+                nextToken();
+                break;
+            default:
+                throw new ParserException("Unknown symbol: " + lookahead.seq);
+        }
+    }
 }
