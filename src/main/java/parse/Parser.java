@@ -1,7 +1,6 @@
 package parse;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class Parser {
     LinkedList<Token> tokens;
@@ -46,13 +45,23 @@ public class Parser {
     }
     public void term() {
         // term -> factor termOp
+        // only the subsequent terms can be proceeded by a PLUSMINUS
         factor();
         termOp();
+    }
+    public void factor() {
+        // factor -> argument factor_op
+        argument();
+        factorOp();
+
     }
     public void signedFactor() {
         // signed_factor -> PLUSMINUS factor
         // signed_factor -> factor
-        // TODO
+        if(lookahead.token == Token.PLUSMINUS) {
+            nextToken();
+        }
+        factor();
     }
     public void termOp() {
         // term_op -> MULTDIV factor term_op
@@ -63,4 +72,12 @@ public class Parser {
             termOp();
         }
     }
+    public void argument() {
+
+    }
+    public void factorOp() {
+        // factor_op -> RAISED value
+        // factor_op -> value
+    }
+
 }
