@@ -57,23 +57,4 @@ public class Tokenizer {
         }
 
     }
-    public static void main(String[] args) {
-        Tokenizer t = new Tokenizer();
-        t.add("sin|cos|exp|ln|sqrt", 1); // functions
-        t.add("\\(", 2);
-        t.add("\\)", 3);
-        t.add("[+-]", 4);
-        t.add("[*/]", 5);
-        t.add("\\^", 6);
-        t.add("[0-9]+", 7);
-        t.add("[a-zA-Z][a-zA-Z0-9_]*", 8); // var
-        try {
-            t.tokenize(" sin(x) * (1 + var_12) ");
-            for (Tokenizer.Token tok : t.tokens) {
-                System.out.println("" + tok.token + " " + tok.seq);
-            }
-        } catch (ParserException e) {
-            System.out.println(e.getMessage());
-        }
-    }
 }

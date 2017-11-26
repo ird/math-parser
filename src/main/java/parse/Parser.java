@@ -14,7 +14,7 @@ public class Parser {
         }
     }
     private void nextToken() {
-        tokens.pop();
+        System.out.println("Token: " + tokens.pop().seq);
         if(tokens.isEmpty()){
             lookahead = new Token(Token.EPSILON, "");
         } else {
@@ -113,7 +113,7 @@ public class Parser {
                 nextToken();
                 break;
             default:
-                throw new ParserException("Unknown symbol: " + lookahead.seq);
+                throw new ParserException("Unknown symbol: "+ lookahead.seq);
         }
     }
 }
